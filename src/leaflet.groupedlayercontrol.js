@@ -230,9 +230,22 @@ L.Control.GroupedLayers = L.Control.extend({
         groupContainer.className = 'leaflet-control-layers-group';
         groupContainer.id = 'leaflet-control-layers-group-' + obj.group.id;
 
+        var groupToggle = document.createElement('span');
+        groupToggle.className = 'leaflet-control-layers-group-toggle leaflet-control-layers-group-toggle-expanded';
+        L.DomEvent
+          .addListener(groupToggle, 'click', L.DomEvent.stopPropagation)
+          .addListener(groupToggle, 'click', L.DomEvent.preventDefault)
+          .addListener(groupToggle, 'click', this._onGroupToggle);
+
+        groupContainer.appendChild(groupToggle);
+
         var groupLabel = document.createElement('span');
         groupLabel.className = 'leaflet-control-layers-group-name';
         groupLabel.innerHTML = obj.group.name;
+        L.DomEvent
+          .addListener(groupLabel, 'click', L.DomEvent.stopPropagation)
+          .addListener(groupLabel, 'click', L.DomEvent.preventDefault)
+          .addListener(groupLabel, 'click', this._onGroupToggle);
 
         groupContainer.appendChild(groupLabel);
         container.appendChild(groupContainer);
@@ -249,6 +262,35 @@ L.Control.GroupedLayers = L.Control.extend({
 
     return label;
   },
+
+   _onGroupToggle: function () {
+    console.log(this);
+    console.log(this.parentNode);
+    var groupContainer = this.parentNode;
+    var twistie    = groupContainer.children[0];
+    var layers     = groupContainer.getElementsByTagName('label');
+
+    if (L.DomUtil.hasClass(twistie,'leaflet-control-layers-group-toggle')){
+      if (L.DomUtil.hasClass(twistie,'leaflet-control-layers-group-toggle-expanded')){
+        L.DomUtil.addClass(twistie,'leaflet-control-layers-group-toggle-collapsed');
+        L.DomUtil.removeClass(twistie,'leaflet-control-layers-group-toggle-expanded');
+      } else {
+        L.DomUtil.addClass(twistie,'leaflet-control-layers-group-toggle-expanded');
+        L.DomUtil.removeClass(twistie,'leaflet-control-layers-group-toggle-collapsed');
+      }
+    }
+    for (i = 0; i < layers.length; i++) {
+      layer = layers[i];
+      if (L.DomUtil.hasClass(layer,'leaflet-control-layers-group-label-collapsed')){
+        L.DomUtil.addClass(layer,'leaflet-control-layers-group-label-expanded');
+        L.DomUtil.removeClass(layer,'leaflet-control-layers-group-label-collapsed');
+      } else {
+        L.DomUtil.addClass(layer,'leaflet-control-layers-group-label-collapsed');
+        L.DomUtil.removeClass(layer,'leaflet-control-layers-group-label-expanded');
+      }
+    }
+  },
+
 
   _onInputClick: function () {
     var i, input, obj,

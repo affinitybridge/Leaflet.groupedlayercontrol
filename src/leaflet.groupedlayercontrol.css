@@ -1,0 +1,38 @@
+.leaflet-control-layers-group-toggle{
+  width: 7px;
+  height: 7px;
+  display:inline-block;
+  cursor: pointer;
+}
+
+.leaflet-control-layers-group-toggle-expanded {
+  background:url('../src/img/menu-expanded.png');
+}
+
+.leaflet-control-layers-group-toggle-collapsed {
+  background:url('../src/img/menu-collapsed.png');
+}
+
+.leaflet-control-layers-group-name {
+  font-weight: bold;
+  margin-bottom: .2em;
+  display: inline-block;
+  padding-left: .5em;
+  cursor: pointer;
+}
+
+.leaflet-control-layers-group {
+  margin-bottom: .5em;
+}
+
+.leaflet-control-layers-group label {
+  padding-left: 1em;
+}
+
+.leaflet-control-layers label.leaflet-control-layers-group-label-expanded {
+  display: block;
+}
+
+.leaflet-control-layers  label.leaflet-control-layers-group-label-collapsed {
+  display: none;
+}

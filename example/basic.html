@@ -3,27 +3,10 @@
 <head>
   <title>Basic example</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
-  <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" /><![endif]-->
-  
-  <style type="text/css">
-    .leaflet-control-layers-group-name {
-      font-weight: bold;
-      margin-bottom: .2em;
-      display: block;
-    }
-
-    .leaflet-control-layers-group {
-      margin-bottom: .5em;
-    }
-
-    .leaflet-control-layers-group label {
-      padding-left: .5em;
-    }
-  </style>
-
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.ie.css" /><![endif]-->
+  <link rel="stylesheet" href="../src/leaflet.groupedlayercontrol.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
   <script src="../src/leaflet.groupedlayercontrol.js"></script>
 </head>
 <body>
@@ -39,35 +22,42 @@
     L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
     L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
+    var otherplaces = new L.LayerGroup();
+
+    L.marker([39.41, -105.42]).bindPopup('This is a place.').addTo(otherplaces),
+    L.marker([39.24, -104.09]).bindPopup('This is another place.').addTo(otherplaces),
+    L.marker([39.73, -104.1]).bindPopup('This is a third place.').addTo(otherplaces),
+    L.marker([37.77, -104.23]).bindPopup('This is somewhere else.').addTo(otherplaces);
+
+
     var restaurants = new L.LayerGroup();
 
     L.marker([39.69, -104.85]).bindPopup('A fake restaurant').addTo(restaurants);
     L.marker([39.69, -105.12]).bindPopup('A fake restaurant').addTo(restaurants);
 
 
-    var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-    cmUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
+    var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors',
+    cmUrl = 'http://{s}.tile.opencyclemap.org/{styleId}/{z}/{x}/{y}.png';
 
-    var minimal   = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr}),
-      midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr}),
-      motorways = L.tileLayer(cmUrl, {styleId: 46561, attribution: cmAttr});
+    var cycle   = L.tileLayer(cmUrl, {styleId: 'cycle', attribution: cmAttr}),
+      transport  = L.tileLayer(cmUrl, {styleId: 'transport', attribution: cmAttr});
 
     var map = L.map('map', {
       center: [39.73, -104.99],
-      zoom: 10,
-      layers: [minimal, motorways, cities]
+      zoom: 7,
+      layers: [cycle, cities]
     });
 
     var baseLayers = {
-      "Minimal": minimal,
-      "Night View": midnight
+      "Cycle": cycle,
+      "Transport": transport
     };
 
     // Overlay layers are grouped
     var groupedOverlays = {
       "Landmarks": {
-        "Motorways": motorways,
-        "Cities": cities
+        "Cities": cities,
+        "Other places": otherplaces
       },
       "Points of Interest": {
         "Restaurants": restaurants
@@ -77,7 +67,7 @@
     // Use the custom grouped layer control, not "L.control.layers"
     var layerControl = L.control.groupedLayers(baseLayers, groupedOverlays);
     map.addControl(layerControl);
-    
+
     // Remove and add a layer
     //layerControl.removeLayer(cities);
     //layerControl.addOverlay(cities, "Cities", "New Category");
