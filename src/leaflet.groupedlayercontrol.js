@@ -2,7 +2,7 @@
 // Author: Ishmael Smyrnow
 L.Control.GroupedLayers = L.Control.extend({
   options: {
-    collapsed: false,
+    collapsed: true,
     position: 'topright',
     autoZIndex: true
   },
