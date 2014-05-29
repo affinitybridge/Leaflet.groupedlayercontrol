@@ -264,8 +264,6 @@ L.Control.GroupedLayers = L.Control.extend({
   },
 
    _onGroupToggle: function () {
-    console.log(this);
-    console.log(this.parentNode);
     var groupContainer = this.parentNode;
     var twistie    = groupContainer.children[0];
     var layers     = groupContainer.getElementsByTagName('label');
