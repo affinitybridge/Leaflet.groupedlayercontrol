@@ -2,7 +2,7 @@
 // Author: Ishmael Smyrnow
 L.Control.GroupedLayers = L.Control.extend({
   options: {
-    collapsed: true,
+    collapsed: false,
     position: 'topright',
     autoZIndex: true
   },
@@ -222,6 +222,14 @@ L.Control.GroupedLayers = L.Control.extend({
     if (obj.overlay) {
       container = this._overlaysList;
 
+      if (this.options.groupedlayers.collapsible && this.options.groupedlayers.collapsed){
+        if (this.options.groupedlayers.expandFirst && obj.group.id == 0){
+          // nevermind...
+        } else {
+          label.className = 'leaflet-control-layers-group-label-collapsed';
+        }
+      }
+
       var groupContainer = this._domGroups[obj.group.id];
 
       // Create the group container if it doesn't exist
@@ -230,27 +238,44 @@ L.Control.GroupedLayers = L.Control.extend({
         groupContainer.className = 'leaflet-control-layers-group';
         groupContainer.id = 'leaflet-control-layers-group-' + obj.group.id;
 
-        var groupToggle = document.createElement('span');
-        groupToggle.className = 'leaflet-control-layers-group-toggle leaflet-control-layers-group-toggle-expanded';
-        L.DomEvent
-          .addListener(groupToggle, 'click', L.DomEvent.stopPropagation)
-          .addListener(groupToggle, 'click', L.DomEvent.preventDefault)
-          .addListener(groupToggle, 'click', this._onGroupToggle);
 
-        groupContainer.appendChild(groupToggle);
+        if (this.options.groupedlayers.collapsible){
+          var groupToggle = document.createElement('span');
+          groupToggle.className = 'leaflet-control-layers-group-toggle leaflet-control-layers-group-toggle-expanded';
+
+          L.DomEvent
+            .addListener(groupToggle, 'click', L.DomEvent.stopPropagation)
+            .addListener(groupToggle, 'click', L.DomEvent.preventDefault)
+            .addListener(groupToggle, 'click', this._onGroupToggle);
+          groupContainer.appendChild(groupToggle);
+        }
+
+
 
         var groupLabel = document.createElement('span');
         groupLabel.className = 'leaflet-control-layers-group-name';
         groupLabel.innerHTML = obj.group.name;
-        L.DomEvent
-          .addListener(groupLabel, 'click', L.DomEvent.stopPropagation)
-          .addListener(groupLabel, 'click', L.DomEvent.preventDefault)
-          .addListener(groupLabel, 'click', this._onGroupToggle);
+
+        if (this.options.groupedlayers.collapsible){
+          L.DomEvent
+            .addListener(groupLabel, 'click', L.DomEvent.stopPropagation)
+            .addListener(groupLabel, 'click', L.DomEvent.preventDefault)
+            .addListener(groupLabel, 'click', this._onGroupToggle);
+        }
+
 
         groupContainer.appendChild(groupLabel);
         container.appendChild(groupContainer);
 
         this._domGroups[obj.group.id] = groupContainer;
+
+        if (this.options.groupedlayers.collapsible && this.options.groupedlayers.collapsed){
+          if (this.options.groupedlayers.expandFirst && obj.group.id == 0){
+            // nevermind...
+          } else {
+            this._onGroupToggle.call(groupLabel);
+          }
+        }
       }
 
       container = groupContainer;
@@ -265,16 +290,16 @@ L.Control.GroupedLayers = L.Control.extend({
 
    _onGroupToggle: function () {
     var groupContainer = this.parentNode;
-    var twistie    = groupContainer.children[0];
+    var toggle    = groupContainer.children[0];
     var layers     = groupContainer.getElementsByTagName('label');
 
-    if (L.DomUtil.hasClass(twistie,'leaflet-control-layers-group-toggle')){
-      if (L.DomUtil.hasClass(twistie,'leaflet-control-layers-group-toggle-expanded')){
-        L.DomUtil.addClass(twistie,'leaflet-control-layers-group-toggle-collapsed');
-        L.DomUtil.removeClass(twistie,'leaflet-control-layers-group-toggle-expanded');
+    if (L.DomUtil.hasClass(toggle,'leaflet-control-layers-group-toggle')){
+      if (L.DomUtil.hasClass(toggle,'leaflet-control-layers-group-toggle-expanded')){
+        L.DomUtil.addClass(toggle,'leaflet-control-layers-group-toggle-collapsed');
+        L.DomUtil.removeClass(toggle,'leaflet-control-layers-group-toggle-expanded');
       } else {
-        L.DomUtil.addClass(twistie,'leaflet-control-layers-group-toggle-expanded');
-        L.DomUtil.removeClass(twistie,'leaflet-control-layers-group-toggle-collapsed');
+        L.DomUtil.addClass(toggle,'leaflet-control-layers-group-toggle-expanded');
+        L.DomUtil.removeClass(toggle,'leaflet-control-layers-group-toggle-collapsed');
       }
     }
     for (i = 0; i < layers.length; i++) {

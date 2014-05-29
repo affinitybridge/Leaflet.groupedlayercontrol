@@ -11,7 +11,7 @@
 </head>
 <body>
 
-  <div id="map" style="position:absolute;width:80%;height:50%;"></div>
+  <div id="map" style="position:absolute;width:80%;height:90%;"></div>
 
   <script type="text/javascript">
 
@@ -65,7 +65,7 @@
     };
 
     // Use the custom grouped layer control, not "L.control.layers"
-    var layerControl = L.control.groupedLayers(baseLayers, groupedOverlays);
+    var layerControl = L.control.groupedLayers(baseLayers, groupedOverlays, {'groupedlayers' : {'collapsible': true, 'collapsed' : true, 'expandFirst' : true}});
     map.addControl(layerControl);
 
     // Remove and add a layer

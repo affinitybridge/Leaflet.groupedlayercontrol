@@ -1,7 +1,7 @@
 Leaflet.groupedlayercontrol
 ===========================
 
-Leaflet layer control with support for grouping overlays together.
+Leaflet layer control with support for grouping overlays together. The layer groups also may be made collapsible.
 
 ![preview](preview.png)
 
@@ -25,14 +25,15 @@ var groupedOverlays = {
   }
 };
 
-L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
+var layerControl = L.control.groupedLayers(baseLayers, groupedOverlays, {'groupedlayers' : {'collapsible': true, 'collapsed' : true, 'expandFirst' : true}});
+map.addControl(layerControl);
 ```
 
 The [example](example/basic.html) shows some basic CSS styling of the new control elements.
 
 ### Adding a layer
 
-Adding a layer individually works similarly to the default layer control, but requires that 
+Adding a layer individually works similarly to the default layer control, but requires that
 you also specify the group name, along with the layer and layer name.
 
 ```javascript
@@ -48,5 +49,5 @@ Grouping base layers is not currently supported.
 
 ## License
 
-Leaflet.groupedlayercontrol is free software, and may be redistributed under 
+Leaflet.groupedlayercontrol is free software, and may be redistributed under
 the MIT-LICENSE.
