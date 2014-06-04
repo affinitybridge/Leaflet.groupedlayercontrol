@@ -221,9 +221,13 @@ L.Control.GroupedLayers = L.Control.extend({
 
     if (obj.overlay) {
       container = this._overlaysList;
+      if (! obj.group ){
+        obj.group = {id : 'Undefined'};
+        console.log('Setting undefined group on layer ' + obj.name);
+      }
 
       if (this.options.groupedlayers.collapsible && this.options.groupedlayers.collapsed){
-        if (this.options.groupedlayers.expandFirst && obj.group.id == 0){
+        if (this.options.groupedlayers.expandFirst && obj.group.id === 0){
           // nevermind...
         } else {
           label.className = 'leaflet-control-layers-group-label-collapsed';
@@ -270,7 +274,7 @@ L.Control.GroupedLayers = L.Control.extend({
         this._domGroups[obj.group.id] = groupContainer;
 
         if (this.options.groupedlayers.collapsible && this.options.groupedlayers.collapsed){
-          if (this.options.groupedlayers.expandFirst && obj.group.id == 0){
+          if (this.options.groupedlayers.expandFirst && obj.group.id === 0){
             // nevermind...
           } else {
             this._onGroupToggle.call(groupLabel);
