@@ -1,6 +1,8 @@
 Leaflet.groupedlayercontrol
 ===========================
 
+forked from https://github.com/ismyrnow/leaflet-groupedlayercontrol
+
 Leaflet layer control with support for grouping overlays together. The layer groups also may be made collapsible.
 
 ![preview](preview.png)
