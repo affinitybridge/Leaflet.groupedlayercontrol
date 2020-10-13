@@ -56,6 +56,7 @@ L.Control.GroupedLayers = L.Control.extend({
   onAdd: function (map) {
     this._initLayout();
     this._update();
+    this._setEvents(map);
 
     map
         .on('layeradd', this._onLayerChange, this)
@@ -373,6 +374,15 @@ L.Control.GroupedLayers = L.Control.extend({
 
   _collapse: function () {
     this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
+  },
+
+  _setEvents: function(map) {
+    this.getContainer().addEventListener('mouseover', function() {
+      map.scrollWheelZoom.disable();
+    });
+    this.getContainer().addEventListener('mouseout', function() {
+      map.scrollWheelZoom.enable();
+    });
   }
 });
 
